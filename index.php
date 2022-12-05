@@ -98,12 +98,12 @@ class FileStorage extends Storage
            echo 'Файл не найден' . PHP_EOL;
         }
 
-           $fileName = 'test_text_file_' . '/' . $slugSearch . '.txt';
-           if (file_exists($fileName) && filesize($fileName) > 0) {
-              $savedData = unserialize(file_get_contents($fileName));
-              $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
-              return $post;
-           }
+            $fileName = 'test_text_file_' . '/' . $slugSearch . '.txt';
+            if (file_exists($fileName) && filesize($fileName) > 0) {
+               $savedData = unserialize(file_get_contents($fileName));
+               $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
+               return $post;
+            }
 
          return false;
     }
