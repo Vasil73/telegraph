@@ -60,7 +60,6 @@ abstract class View
     {
         $this->storage = $object;
     }
-
     abstract public function displayTextById(string $id): string;
     abstract public function displayTextByUrl(string $url): string;
 }
@@ -69,7 +68,7 @@ abstract class User
 {
     public $id, $name, $role;
 
-    abstract public function getTextsToEdit();
+    abstract public function getTextsToEdit($id, $name, $role): string;
 }
 
 
