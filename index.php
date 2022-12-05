@@ -74,7 +74,7 @@ abstract class User
 
 class FileStorage extends Storage
 {
-    public function create($telegraph)
+    public function create($telegraphText)
     {
         $slug = 'test_text_file_' . date('Y-m-d') . '.txt';
         $i = 1;
@@ -82,30 +82,20 @@ class FileStorage extends Storage
             $slug = 'test_text_file_' . date('Y-m-d') . '_' . $i++ . '.txt';
         }
 
-        $telegraph->slug = $slug;
-        file_put_contents($slug, $telegraph);
-        return $telegraph->slug;
+        $telegraphText->slug = $slug;
+        file_put_contents($slug, $telegraphText);
+        return $telegraphText->slug;
 
     }
 
-    public function read(string $telegraphText)
+    public function read(string $slug)
     {
-          echo 'Поиск файла - ' . $telegraphText . PHP_EOL;
-        if (file_exists($telegraphText))
-        {
-           echo 'Файл найден' . PHP_EOL;
-        }else {
-           echo 'Файл не найден' . PHP_EOL;
+        $fileName = 'test_text_file_' . '/' . $slug . '.txt';
+        if (file_exists($fileName) && filesize($fileName) > 0) {
+            $savedData = unserialize(file_get_contents($fileName));
+            $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
+            return $post;
         }
-
-            $fileName = 'test_text_file_' . '/' . $telegraphText . '.txt';
-            if (file_exists($fileName) && filesize($fileName) > 0) {
-               $savedData = unserialize(file_get_contents($fileName));
-               $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
-               return $post;
-            }
-
-         return false;
     }
 
 
@@ -143,6 +133,5 @@ echo $telegraphText->text . PHP_EOL;
 $fileStorage = new FileStorage();
 $textStorage = $fileStorage->create($telegraphText);
 var_dump($textStorage);
-$slugSearch = 'test_text_file_2022-12-05_3.txt';
-$fileStorage->read($slugSearch);
-
+print_r($fileStorage->read('test_text_file.txt'));
+$fileStorage->delete('test_text_file.txt');
