@@ -88,17 +88,17 @@ class FileStorage extends Storage
 
     }
 
-    public function read(string $slugSearch)
+    public function read(string $telegraphText)
     {
-          echo 'Поиск файла - ' . $slugSearch . PHP_EOL;
-        if (file_exists($slugSearch))
+          echo 'Поиск файла - ' . $telegraphText . PHP_EOL;
+        if (file_exists($telegraphText))
         {
            echo 'Файл найден' . PHP_EOL;
         }else {
            echo 'Файл не найден' . PHP_EOL;
         }
 
-            $fileName = 'test_text_file_' . '/' . $slugSearch . '.txt';
+            $fileName = 'test_text_file_' . '/' . $telegraphText . '.txt';
             if (file_exists($fileName) && filesize($fileName) > 0) {
                $savedData = unserialize(file_get_contents($fileName));
                $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
@@ -134,18 +134,15 @@ class FileStorage extends Storage
 }
 
 
+$telegraphText = new TelegraphText('Vasiliy', 'test_text_file.txt', '');
+$telegraphText->storeText();
+$telegraphText->loadText();
+$telegraphText->editText( 'Научиться работать с классами и объектами на практике.', 'Практическая работа' );
+echo $telegraphText->text . PHP_EOL;
+
 $fileStorage = new FileStorage();
-$telegraph = new TelegraphText('Vasiliy', 'test_text_file', '');
-$telegraph->storeText();
-$telegraph->loadText();
-$telegraph->editText( 'Научиться работать с классами и объектами на практике.', 'Практическая работа' );
-echo $telegraph->text . PHP_EOL;
-
-$textStorage = $fileStorage->create($telegraph);
+$textStorage = $fileStorage->create($telegraphText);
 var_dump($textStorage);
-
-$slugSearch = 'test_text_file_2022-12-05_15.txt';
+$slugSearch = 'test_text_file_2022-12-05_3.txt';
 $fileStorage->read($slugSearch);
-
-
 
