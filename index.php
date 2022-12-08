@@ -1,6 +1,9 @@
 <?php
 
 
+const STORAGE = 'file_storage';
+
+
 class TelegraphText {
     public $text;
     public $title;
@@ -45,7 +48,7 @@ class TelegraphText {
 
 abstract class Storage
 {
-    abstract public function create($telegraph);
+    abstract public function create($object): string;
     abstract public function read(string $slug);
     abstract public function update(string $slug, $data): void;
     abstract public function delete(string $slug): void;
@@ -73,40 +76,53 @@ abstract class User
 
 
 class FileStorage extends Storage
+
+
 {
-    public function create($telegraphText)
+    public function create($object): string
     {
-        $slug = 'test_text_file_' . date('Y-m-d') . '.txt';
-        $i = 1;
-        while (file_exists($slug)) {
-            $slug = 'test_text_file_' . date('Y-m-d') . '_' . $i++ . '.txt';
+        $fileName = $object->slug . '_' . date('Y-m-d');
+        if (file_exists(STORAGE . '/' . $fileName . '.txt')) {
+            $i = 0;
+            do {
+                $i++;
+                $fileNameConflict = $fileName . '_' . $i;
+            } while (file_exists(STORAGE . '/' . $fileNameConflict . '.txt'));
+            $fileName = $fileNameConflict;
         }
+        $object->slug = $fileName;
 
-        $telegraphText->slug = $slug;
-        file_put_contents($slug, $telegraphText);
-        return $telegraphText->slug;
+        $data = [
+            'title' => $object->title,
+            'text' => $object->text,
+            'author' => $object->author,
+            'published' => $object->published,
+            'slug' => $object->slug,
+        ];
 
+        file_put_contents(STORAGE . '/' . $fileName . '.txt', serialize($data));
+        return $fileName;
     }
 
     public function read(string $slug)
     {
-        $fileName = 'test_text_file_' . '/' . $slug . '.txt';
-        if (file_exists($fileName) && filesize($fileName) > 0) {
-            $savedData = unserialize(file_get_contents($fileName));
+        if (file_exists($slug) && filesize($slug) > 0) {
+            $savedData = unserialize(file_get_contents($slug));
             $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
             return $post;
         }
+        return false;
     }
 
 
     public function update(string $slug, $data): void
     {
-        file_put_contents('test_text_file' . '/' . $slug . '.txt', serialize($data));
+        file_put_contents( 'test_text_file' . '.txt', serialize($data));
     }
 
     public function delete(string $slug): void
     {
-        $file = 'test_text_file' . '/' . $slug . '.txt';
+        $file = STORAGE . '/' . $slug . '.txt';
         if (file_exists($file)) {
             unlink($file);
         }
@@ -114,24 +130,26 @@ class FileStorage extends Storage
 
     public function list(): array
     {
-        $allFiles = array_diff(scandir('test_text_file'), array('..', '.'));
+        $allFiles = array_diff(scandir(STORAGE), array('.', '..'));
         $result = [];
         foreach ($allFiles as $file) {
-            $result[$file] = unserialize(file_get_contents('test_text_file' . '/' . $file));
+            $result[$file] = unserialize(file_get_contents(STORAGE . '/' .  $file));
         }
         return $result;
     }
 }
 
 
-$telegraphText = new TelegraphText('Vasiliy', 'test_text_file.txt', '');
+$telegraphText = new TelegraphText( 'Vasiliy', 'test_text_file', 'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
+$fileStorage = new FileStorage();
 $telegraphText->storeText();
 $telegraphText->loadText();
 $telegraphText->editText( 'Научиться работать с классами и объектами на практике.', 'Практическая работа' );
 echo $telegraphText->text . PHP_EOL;
 
-$fileStorage = new FileStorage();
 $textStorage = $fileStorage->create($telegraphText);
 var_dump($textStorage);
-print_r($fileStorage->read('test_text_file.txt'));
-$fileStorage->delete('test_text_file.txt');
+print_r($fileStorage->read('test_text_file_2022-12-08.txt'));
+$fileStorage->delete('test_text_file_2022-12-08.txt');
+$fileStorage->update('test_text_file_2022-12-08.txt', $telegraphText);
+print_r($fileStorage->list()) ;
