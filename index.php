@@ -1,9 +1,6 @@
 <?php
 
 
-const STORAGE = 'file_storage';
-
-
 class TelegraphText {
     public $text;
     public $title;
@@ -76,18 +73,16 @@ abstract class User
 
 
 class FileStorage extends Storage
-
-
 {
     public function create($object): string
     {
         $fileName = $object->slug . '_' . date('Y-m-d');
-        if (file_exists(STORAGE . '/' . $fileName . '.txt')) {
+        if (file_exists('file_storage' . '/' . $fileName . '.txt')) {
             $i = 0;
             do {
                 $i++;
                 $fileNameConflict = $fileName . '_' . $i;
-            } while (file_exists(STORAGE . '/' . $fileNameConflict . '.txt'));
+            } while (file_exists('file_storage' . '/' . $fileNameConflict . '.txt'));
             $fileName = $fileNameConflict;
         }
         $object->slug = $fileName;
@@ -100,7 +95,7 @@ class FileStorage extends Storage
             'slug' => $object->slug,
         ];
 
-        file_put_contents(STORAGE . '/' . $fileName . '.txt', serialize($data));
+        file_put_contents('file_storage' . '/' . $fileName . '.txt', serialize($data));
         return $fileName;
     }
 
@@ -122,7 +117,7 @@ class FileStorage extends Storage
 
     public function delete(string $slug): void
     {
-        $file = STORAGE . '/' . $slug . '.txt';
+        $file = 'file_storage' . '/' . $slug . '.txt';
         if (file_exists($file)) {
             unlink($file);
         }
@@ -130,10 +125,10 @@ class FileStorage extends Storage
 
     public function list(): array
     {
-        $allFiles = array_diff(scandir(STORAGE), array('.', '..'));
+        $allFiles = array_diff(scandir('file_storage'), array('.', '..'));
         $result = [];
         foreach ($allFiles as $file) {
-            $result[$file] = unserialize(file_get_contents(STORAGE . '/' .  $file));
+            $result[$file] = unserialize(file_get_contents('file_storage' . '/' .  $file));
         }
         return $result;
     }
