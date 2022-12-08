@@ -135,7 +135,8 @@ class FileStorage extends Storage
 }
 
 
-$telegraphText = new TelegraphText( 'Vasiliy', 'test_text_file', 'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
+$telegraphText = new TelegraphText( 'Vasiliy', 'test_text_file',
+    'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
 $fileStorage = new FileStorage();
 $telegraphText->storeText();
 $telegraphText->loadText();
