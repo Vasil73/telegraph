@@ -1,49 +1,10 @@
 <?php
 
 
-class TelegraphText {
-    public $text;
-    public $title;
-    public $author;
-    public $published;
-    public $slug;
-    public $fileStorage;
-
-    public function __construct(string $author, string $slug, string $fileStorage)
-    {
-        $this->fileStorage = $fileStorage;
-        $this->author = $author;
-        $this->published = date('Y-m-d');
-        $this->slug = $slug;
-    }
-
-    public function storeText(): void
-    {
-        $addTextArray = ['title' => $this, 'text' => $this->text,
-            'author' => $this->author, 'published' => $this->published, 'fileStorage' => $this->fileStorage];
-        file_put_contents($this->slug, serialize($addTextArray));
-    }
-
-    public function loadText()
-    {
-        if (file_exists($this->slug)) {
-            $addTextArray = unserialize(file_get_contents($this->slug));
-            $this->title = $addTextArray['title'];
-            $this->text = $addTextArray['text'];
-            $this->author = $addTextArray['author'];
-            $this->published = $addTextArray['published'];
-            $this->fileStorage = $addTextArray['fileStorage'];
-        }
-
-    }
-    public function editText($text, $title){
-        $this->text = $text;
-        $this->title = $title;
-    }
-}
+require_once 'TelegraphText.php';
 
 
-abstract class Storage
+abstract class Storage implements LoggerInterface, EventListenerInterface
 {
     abstract public function create($object): string;
     abstract public function read(string $slug);
@@ -64,7 +25,8 @@ abstract class View
     abstract public function displayTextByUrl(string $url): string;
 }
 
-abstract class User
+
+abstract class User implements EventListenerInterface
 {
     public $id, $name, $role;
 
@@ -74,6 +36,27 @@ abstract class User
 
 class FileStorage extends Storage
 {
+
+    public function logMessage(string $error): void
+    {
+    }
+
+    public function lastMessages(int $num): array
+    {
+        $example = [];
+        return $example;
+    }
+
+
+    public function attachEvent(string $className, callable $callback): void
+    {
+    }
+
+    public function detouchEvent(string $className): void
+    {
+    }
+
+
     public function create($object): string
     {
         $fileName = $object->slug . '_' . date('Y-m-d');
@@ -133,6 +116,7 @@ class FileStorage extends Storage
         return $result;
     }
 }
+
 
 
 $telegraphText = new TelegraphText( 'Vasiliy', 'test_text_file',
