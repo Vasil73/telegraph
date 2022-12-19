@@ -13,6 +13,10 @@ abstract class Storage implements LoggerInterface, EventListenerInterface
     abstract public function update(string $slug, $data): void;
     abstract public function delete(string $slug): void;
     abstract public function list();
+    abstract public function logMessage(string $error): void;
+    abstract public function lastMessages(int $num): array;
+    abstract public function attachEvent(string $className, callable $callback);
+    abstract public function detouchEvent (string $className);
 }
 
 abstract class View
@@ -33,14 +37,16 @@ abstract class User implements EventListenerInterface
     public $id, $name, $role;
 
     abstract public function getTextsToEdit($id, $name, $role): string;
+    abstract public function attachEvent(string $className, callable $callback);
+    abstract public function detouchEvent (string $className);
 }
 
 
 require_once 'FileStorage.php';
 
 
-$telegraphText = new TelegraphText( 'Vasiliy', 'test_text_file',
-    'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
+$telegraphText = new TelegraphText( 'Vasiliy', '19.12.2022',
+    'test_text_file', 'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
 $fileStorage = new FileStorage();
 $telegraphText->storeText();
 $telegraphText->loadText();

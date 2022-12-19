@@ -7,11 +7,11 @@ class TelegraphText {
     public $text, $title, $author, $published, $slug, $fileStorage;
 
 
-    public function __construct(string $author, string $slug, string $fileStorage)
+    public function __construct(string $author, string $published, string $slug, string $fileStorage)
     {
         $this->fileStorage = $fileStorage;
         $this->author = $author;
-        $this->published = date('Y-m-d');
+        $this->published = new DateTime($published); //date('Y-m-d');
         $this->slug = $slug;
     }
 

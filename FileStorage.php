@@ -1,5 +1,8 @@
 <?php
 
+require_once 'index.php';
+require_once 'interfaces.php';
+
 
 class FileStorage extends Storage
 {
@@ -7,6 +10,7 @@ class FileStorage extends Storage
     public function logMessage(string $error): void
     {
     }
+
 
     public function lastMessages(int $num): array
     {
@@ -17,6 +21,9 @@ class FileStorage extends Storage
 
     public function attachEvent(string $className, callable $callback): void
     {
+        if (is_callable($callback)) {
+            call_user_func('attachEvent', $callback);
+        }
     }
 
     public function detouchEvent(string $className): void
@@ -26,7 +33,7 @@ class FileStorage extends Storage
 
     public function create($object): string
     {
-        $fileName = $object->slug . '_' . date('Y-m-d');
+        $fileName = $object->slug . '_' . date('d-m-Y');
         if (file_exists('file_storage' . '/' . $fileName . '.txt')) {
             $i = 0;
             do {
@@ -53,7 +60,7 @@ class FileStorage extends Storage
     {
         if (file_exists($slug) && filesize($slug) > 0) {
             $savedData = unserialize(file_get_contents($slug));
-            $post = new TelegraphText($savedData['author'], $savedData['slug'], $savedData['fileStorage']);
+            $post = new TelegraphText($savedData['author'], $savedData['published'], $savedData['slug'], $savedData['fileStorage']);
             return $post;
         }
         return false;
