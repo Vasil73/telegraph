@@ -16,13 +16,15 @@ class FileStorage extends Storage
 
     public function lastMessages(int $num): array
     {
-        // TODO: Implement lastMessages() method.
-        return array($num);
+        $numArr = [];
+        return $numArr;
     }
 
     public function attachEvent(string $className, callable $callback)
     {
-        // TODO: Implement attachEvent() method.
+        if (is_callable($callback)) {
+            call_user_func('attachEvent', $callback);
+        }
     }
 
 
