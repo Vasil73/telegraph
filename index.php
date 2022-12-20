@@ -8,9 +8,9 @@ require_once 'TelegraphText.php';
 
 abstract class Storage implements LoggerInterface, EventListenerInterface
 {
-    abstract public function create($object): string;
+    abstract public function create(TelegraphText $object): string;
     abstract public function read(string $slug);
-    abstract public function update(string $slug, $data): void;
+    abstract public function update(string $slug, TelegraphText $data): void;
     abstract public function delete(string $slug): void;
     abstract public function list();
     abstract public function logMessage(string $error): void;
@@ -46,7 +46,7 @@ require_once 'FileStorage.php';
 
 
 $telegraphText = new TelegraphText( 'Vasiliy', '19.12.2022',
-    'test_text_file', 'C:xampp\htdocs\Telegraph_Project\telegraph\storage');
+    'test_text_file', 'C:xampp\htdocs\Telegraph_Project\telegraph\file_storage');
 $fileStorage = new FileStorage();
 $telegraphText->storeText();
 $telegraphText->loadText();

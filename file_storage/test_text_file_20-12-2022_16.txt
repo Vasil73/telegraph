@@ -1,0 +1,1 @@
+a:5:{s:5:"title";s:37:"Практическая работа";s:4:"text";s:100:"Научиться работать с классами и объектами на практике.";s:6:"author";s:7:"Vasiliy";s:9:"published";O:8:"DateTime":3:{s:4:"date";s:26:"2022-12-19 00:00:00.000000";s:13:"timezone_type";i:3;s:8:"timezone";s:13:"Europe/Berlin";}s:4:"slug";s:28:"test_text_file_20-12-2022_16";}

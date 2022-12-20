@@ -7,31 +7,32 @@ require_once 'interfaces.php';
 class FileStorage extends Storage
 {
 
+
     public function logMessage(string $error): void
     {
+        // TODO: Implement logMessage() method.
     }
 
 
     public function lastMessages(int $num): array
     {
-        $example = [];
-        return $example;
+        // TODO: Implement lastMessages() method.
+        return array($num);
     }
 
-
-    public function attachEvent(string $className, callable $callback): void
+    public function attachEvent(string $className, callable $callback)
     {
-        if (is_callable($callback)) {
-            call_user_func('attachEvent', $callback);
-        }
+        // TODO: Implement attachEvent() method.
     }
 
-    public function detouchEvent(string $className): void
+
+    public function detouchEvent(string $className)
     {
+        // TODO: Implement detouchEvent() method.
     }
 
 
-    public function create($object): string
+    public function create(TelegraphText $object): string
     {
         $fileName = $object->slug . '_' . date('d-m-Y');
         if (file_exists('file_storage' . '/' . $fileName . '.txt')) {
@@ -67,7 +68,7 @@ class FileStorage extends Storage
     }
 
 
-    public function update(string $slug, $data): void
+    public function update(string $slug, TelegraphText $data): void
     {
         file_put_contents( 'test_text_file' . '.txt', serialize($data));
     }
