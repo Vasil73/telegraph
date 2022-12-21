@@ -13,10 +13,23 @@ abstract class Storage implements LoggerInterface, EventListenerInterface
     abstract public function update(string $slug, TelegraphText $data): void;
     abstract public function delete(string $slug): void;
     abstract public function list();
-    abstract public function logMessage(string $error): void;
-    abstract public function lastMessages(int $num): array;
-    abstract public function attachEvent(string $className, callable $callback);
-    abstract public function detouchEvent (string $className);
+    public function logMessage(string $error): void
+    {
+        // TODO: Implement logMessage() method.
+    }
+    public function lastMessages(int $num): array
+    {
+        $numArr = [];
+        return $numArr;
+    }
+    public function attachEvent(string $className, callable $callback)
+    {
+        // TODO: Implement attachEvent() method.
+    }
+    public function detouchEvent (string $className)
+    {
+        // TODO: Implement detouchEvent() method.
+    }
 }
 
 abstract class View
