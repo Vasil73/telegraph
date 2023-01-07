@@ -1,6 +1,6 @@
 <?php
 
-require_once 'index.php';
+
 
 
 class TelegraphText {
