@@ -2,10 +2,6 @@
 
 
 require_once 'autoload.php';
-const STORAGE = 'file-storage';
-if (!file_exists('file_storage')) {
-    mkdir('file_storage');
-}
 
 
 $telegraphText = new TelegraphText( 'Vasiliy', '19.12.2022',

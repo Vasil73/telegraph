@@ -81,8 +81,14 @@ class TelegraphText {
         return false;
     }
     public function editText($text, $title){
-        $this->text = $text;
+
+        if (strlen($text) <= 0 || strlen($text) > 500) {
+
+            throw new Exception('Длина текста должна быть от 1 до 500 символов!');
+        }
+
         $this->title = $title;
+        $this->text = $text;
     }
 }
 
