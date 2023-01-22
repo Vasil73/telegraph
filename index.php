@@ -9,7 +9,7 @@ $telegraphText = new TelegraphText( 'Vasiliy', '19.12.2022',
 $fileStorage = new FileStorage();
 //$telegraphText->storeText();
 //$telegraphText->loadText();
-$telegraphText->editText( 'Научиться работать с классами и объектами на практике.', 'Практическая работа' );
+$telegraphText->editText( 'сдрасте', 'заголовок' );
 echo $telegraphText->text . PHP_EOL;
 
 $textStorage = $fileStorage->create($telegraphText);

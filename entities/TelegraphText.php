@@ -54,7 +54,7 @@ class TelegraphText {
 
     public function __get($name){
 
-        if ($name === 'text') {
+        if ($name === 'name') {
             return $this->loadText();
         } else {
             return $this->$name;
@@ -70,25 +70,30 @@ class TelegraphText {
 
     private function loadText(): string
     {
-        if (file_exists($this->slug)) {
-            $addTextArray = unserialize(file_get_contents($this->slug));
-            $this->title = $addTextArray['title'];
-            $this->text = $addTextArray['text'];
-            $this->author = $addTextArray['author'];
-            $this->published = $addTextArray['published'];
-            $this->fileStorage = $addTextArray['fileStorage'];
-        }
-        return false;
-    }
-    public function editText($text, $title){
+       // if (file_exists($this->slug)) {
+           // $addTextArray = unserialize(file_get_contents($this->slug));
+          //  $this->title = $addTextArray['title'];
+           // $this->text = $addTextArray['text'];
+          //  $this->author = $addTextArray['author'];
+           // $this->fileStorage = $addTextArray['fileStorage'];
+          //  $this->published = $addTextArray['published'];
 
-        if (strlen($text) <= 0 || strlen($text) > 500) {
+       // }
+        return $this->text;
+
+    }
+    public function editText(string $text, string $title) :void
+    {
+
+        if (strlen($text) < 1 || strlen($text) > 500) {
 
             throw new Exception('Длина текста должна быть от 1 до 500 символов!');
+
         }
 
         $this->title = $title;
         $this->text = $text;
+
     }
 }
 
