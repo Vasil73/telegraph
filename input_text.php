@@ -8,13 +8,13 @@
 
     function errorHandler (Throwable $throwable)
     {
+
         echo "<div style='background-color: pink; color: red; width: 40%; text-align: center; font-weight: bold; padding: 15px;'>{$throwable->getMessage()}</div>";
 
     }
 
     set_exception_handler('errorHandler');
 
-    //throw new Exception('Длина текста должна быть от 1 до 500 символов!');
 
     if (isset($_POST['author']) && isset($_POST['text']))
     {
@@ -25,7 +25,7 @@
         $newObject->editText('text', 'title');
 
 
-        if (strlen($newObject->name) > 0)
+        if (strlen($newObject->text) > 0)
         {
             $test = new FileStorage();
             $result = $test->create($newObject);
@@ -41,6 +41,12 @@
                 $email = htmlentities($_POST['email']);
 
                 try {
+                    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+                    if (!$email)
+                    {
+                        throw new \Exception('Неправильный email');
+                    }
+
                     //Server settings
                     $mail->SMTPOptions = array(
                         'ssl' => array(
@@ -86,7 +92,10 @@
         }
     }
 
-    ?>
+
+
+
+?>
 
 
     <!DOCTYPE html>
@@ -114,7 +123,7 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Ваш Email</label>
-                <input type="email" name="email" id="email" class="form-control">
+                <input type="text" name="email" id="email" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Отправить</button>
         </form>

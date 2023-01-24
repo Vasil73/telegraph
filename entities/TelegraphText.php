@@ -66,26 +66,28 @@ class TelegraphText {
         $addTextArray = ['title' => $this, 'text' => $this->text,
             'author' => $this->author, 'published' => $this->published, 'fileStorage' => $this->fileStorage];
         file_put_contents($this->slug, serialize($addTextArray));
+
     }
 
     private function loadText(): string
     {
-       // if (file_exists($this->slug)) {
-           // $addTextArray = unserialize(file_get_contents($this->slug));
-          //  $this->title = $addTextArray['title'];
-           // $this->text = $addTextArray['text'];
-          //  $this->author = $addTextArray['author'];
-           // $this->fileStorage = $addTextArray['fileStorage'];
-          //  $this->published = $addTextArray['published'];
+        if (file_exists($this->slug)) {
+            $addTextArray = unserialize(file_get_contents($this->slug));
+           $this->title = $addTextArray['title'];
+           $this->text = $addTextArray['text'];
+           $this->author = $addTextArray['author'];
+           $this->fileStorage = $addTextArray['fileStorage'];
+           $this->published = $addTextArray['published'];
 
-       // }
+        }
         return $this->text;
 
     }
-    public function editText(string $text, string $title) :void
+    public function editText(string $text, string $title)
     {
 
-        if (strlen($text) < 1 || strlen($text) > 500) {
+        if (strlen($text) < 1 || strlen($text) > 500)
+        {
 
             throw new Exception('Длина текста должна быть от 1 до 500 символов!');
 
@@ -95,5 +97,6 @@ class TelegraphText {
         $this->text = $text;
 
     }
+
 }
 
